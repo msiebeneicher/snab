@@ -1,0 +1,49 @@
+# This is an example .goreleaser.yml file with some sane defaults.
+# Make sure to check the documentation at http://goreleaser.com
+env:
+  - GOFLAGS=-mod=readonly
+before:
+  hooks:
+    # You may remove this if you don't use go modules.
+    - go mod download
+builds:
+  - id: "ghsync"
+    binary: ghsync
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - darwin
+      - linux
+    goarch:
+      - amd64
+      - arm64
+      - "386"
+# archives:
+#   -
+#     format: zip
+#     name_template: "{{ .Binary }}_{{ .Env.VFCDK_VERSION }}_{{ .Os }}_{{ .Arch }}"
+#     replacements:
+#       linux: Linux
+#       windows: Windows
+#       386: i386
+#       amd64: x86_64
+#     files:
+#       - README.md
+#       - LICENSE.md
+checksum:
+  name_template: 'checksums.txt'
+snapshot:
+  name_template: "{{ .Tag }}-next"
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^(dev):'
+      - '^(docs):'
+      - '^(test):'
+github_urls:
+  api: https://github.vodafone.com/api/v3/
+  upload: https://github.vodafone.com/api/uploads/
+  download: https://github.vodafone.com/
+  # set to true if you use a self-signed certificate
+  skip_tls_verify: false
