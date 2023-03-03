@@ -4,7 +4,9 @@ import (
 	"fmt"
 	"os"
 
+	"snab/pkg/command"
 	"snab/pkg/logger"
+	"snab/pkg/snabfile"
 
 	"github.com/spf13/cobra"
 )
@@ -12,11 +14,7 @@ import (
 var verbose bool
 var trace bool
 
-var RootCmd = &cobra.Command{
-	Use:   "snab",
-	Short: "SnaB - bundle shell script to a powerful modern CLI applications",
-	Long:  `SnaB - enable you to bundle shell script to a powerful modern CLI applications`,
-}
+var RootCmd *cobra.Command
 
 func Execute() {
 	if err := RootCmd.Execute(); err != nil {
@@ -26,9 +24,20 @@ func Execute() {
 }
 
 func init() {
+	c, _ := snabfile.NewTasksByYaml("./examples/.snab.yml") //TODO: handle snapfile path (by env var?)
+
+	RootCmd = &cobra.Command{
+		Use:     c.Name,
+		Short:   c.Description.Short,
+		Long:    c.Description.Long,
+		Example: c.Description.Example,
+	}
+
 	RootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "set verbose output to debug level")
 	RootCmd.PersistentFlags().BoolVarP(&trace, "trace", "", false, "set verbose output to trace level")
 	cobra.OnInitialize(handleVerbosity)
+
+	command.InitTaskCommands(c.Tasks, RootCmd)
 }
 
 func handleVerbosity() {

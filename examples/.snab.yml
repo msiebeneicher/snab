@@ -1,5 +1,12 @@
 version: '0.1'
 
+name: snab
+
+description:
+  short: 'SnaB - bundle shell script to a powerful modern CLI applications'
+  long: 'SnaB - enable you to bundle shell script to a powerful modern CLI applications'
+  example: snab /foo/bar/example
+
 tasks:
   foo:
     description:
@@ -7,12 +14,13 @@ tasks:
       long: 'execute awesome foo script'
       example: 'foo --verbose'
     cmds:
-      - foo.sh
+      - ./foo.sh
+    dir: 'examples'
     # Args:    cobra.NoArgs,
 
   bar:
     description:
       short: 'bar script'
-    dir: 'foobar'
+    dir: 'examples/foobar'
     cmds:
-      - bar.sh
+      - ./bar.sh
