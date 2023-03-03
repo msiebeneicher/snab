@@ -1,0 +1,18 @@
+version: '0.1'
+
+tasks:
+  foo:
+    description:
+      short: 'foo script'
+      long: 'execute awesome foo script'
+      example: 'foo --verbose'
+    cmds:
+      - foo.sh
+    # Args:    cobra.NoArgs,
+
+  bar:
+    description:
+      short: 'bar script'
+    dir: 'foobar'
+    cmds:
+      - bar.sh
