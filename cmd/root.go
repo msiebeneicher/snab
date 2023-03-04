@@ -35,6 +35,11 @@ func init() {
 
 	RootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "set verbose output to debug level")
 	RootCmd.PersistentFlags().BoolVarP(&trace, "trace", "", false, "set verbose output to trace level")
+
+	// set snabfile path again in flagset to ignore it
+	RootCmd.PersistentFlags().String("snabfile", "", "snabfile path which will be ignored here")
+	RootCmd.PersistentFlags().MarkHidden("snabfile")
+
 	cobra.OnInitialize(handleVerbosity)
 
 	command.InitTaskCommands(c.Tasks, RootCmd)
