@@ -4,6 +4,8 @@ import (
 	"os"
 	"snab/pkg/logger"
 
+	"github.com/spf13/pflag"
+	"github.com/spf13/viper"
 	"gopkg.in/yaml.v3"
 )
 
@@ -39,4 +41,20 @@ func NewTasksByYaml(p string) (Config, error) {
 
 	err = yaml.Unmarshal(yamlFile, &c)
 	return c, err
+}
+
+func GetSnabfilePath() string {
+	fs := pflag.NewFlagSet("snab", pflag.ContinueOnError)
+	fs.String("snabfile", "foo", "Path to your snabfile")
+
+	fs.Parse(os.Args[1:])
+
+	viper.BindEnv("snabfile")
+	viper.BindPFlags(fs)
+
+	p := viper.GetString("snabfile")
+
+	//TODO: validate path
+
+	return p
 }
