@@ -1,19 +1,28 @@
 package snabfile
 
 import (
+	"fmt"
+	"io"
 	"os"
+	"path/filepath"
+	"snab/pkg/common"
 	"snab/pkg/logger"
+	"strings"
 
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 	"gopkg.in/yaml.v3"
 )
 
+// default SnaB file name
+const snabfileName = ".snab.yml"
+
 type Config struct {
-	Version     string      `yaml:"version"`
-	Name        string      `yaml:"name"`
-	Description Description `yaml:"description"`
-	Tasks       Tasks
+	SchemaVersion int         `yaml:"schema_version"`
+	Name          string      `yaml:"name"`
+	Version       string      `yaml:"version"`
+	Description   Description `yaml:"description"`
+	Tasks         Tasks
 }
 
 type Tasks map[string]Task
@@ -30,8 +39,9 @@ type Description struct {
 	Example string `yaml:"example"`
 }
 
-func NewTasksByYaml(p string) (Config, error) {
+func NewTasksByYaml() (Config, error) {
 	c := Config{}
+	p := getSnabfilePath()
 	yamlFile, err := os.ReadFile(p)
 
 	if err != nil {
@@ -43,18 +53,40 @@ func NewTasksByYaml(p string) (Config, error) {
 	return c, err
 }
 
-func GetSnabfilePath() string {
+func getSnabfilePathInput() string {
 	fs := pflag.NewFlagSet("snab", pflag.ContinueOnError)
+
 	fs.String("snabfile", "foo", "Path to your snabfile")
+	// disable output for flags
+	fs.SetOutput(io.Discard)
 
 	fs.Parse(os.Args[1:])
 
 	viper.BindEnv("snabfile")
 	viper.BindPFlags(fs)
 
-	p := viper.GetString("snabfile")
+	return viper.GetString("snabfile")
+}
 
-	//TODO: validate path
+func getSnabfilePath() string {
+	p := getSnabfilePathInput()
+	if p == "" {
+		logger.Fatalln("Please set a path to your snabfile")
+	}
 
-	return p
+	snabfilePath, err := filepath.Abs(p)
+	if err != nil {
+		logger.WithField("err", err).Fatalln("snabfile not found: path is not valid")
+	}
+
+	if !strings.Contains(snabfilePath, snabfileName) {
+		snabfilePath = fmt.Sprintf("%s/%s", snabfilePath, snabfileName)
+	}
+
+	isFile, err := common.IsFile(snabfilePath)
+	if !isFile || err != nil {
+		logger.WithField("err", err).Fatalf("snabfile `%s` not found", snabfilePath)
+	}
+
+	return snabfilePath
 }

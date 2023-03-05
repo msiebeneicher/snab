@@ -24,7 +24,7 @@ func Execute() {
 }
 
 func init() {
-	c, _ := snabfile.NewTasksByYaml("./examples/.snab.yml") //TODO: handle snapfile path (by env var?)
+	c, _ := snabfile.NewTasksByYaml()
 
 	RootCmd = &cobra.Command{
 		Use:     c.Name,
