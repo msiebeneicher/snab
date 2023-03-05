@@ -1,11 +1,12 @@
-version: '0.1'
+schema_version: 1
 
-name: snab
+name: boa
+version: '1.0.0'
 
 description:
-  short: 'SnaB - bundle shell script to a powerful modern CLI applications'
-  long: 'SnaB - enable you to bundle shell script to a powerful modern CLI applications'
-  example: snab /foo/bar/example
+  short: 'Boa Example - SnaB - bundle shell script to a powerful modern CLI applications'
+  long: 'Boa Example - SnaB - enable you to bundle shell script to a powerful modern CLI applications'
+  example: boa /foo/bar/example
 
 tasks:
   foo:
