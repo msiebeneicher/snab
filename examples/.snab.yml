@@ -13,11 +13,10 @@ tasks:
     description:
       short: 'foo script'
       long: 'execute awesome foo script'
-      example: 'foo --verbose'
+      example: 'boa foo [--verbose] PATH'
     cmds:
       - ./foo.sh
     dir: 'examples'
-    # Args:    cobra.NoArgs,
 
   bar:
     description:

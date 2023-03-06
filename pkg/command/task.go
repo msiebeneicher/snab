@@ -3,11 +3,13 @@ package command
 import (
 	"bytes"
 	"context"
+	"fmt"
 	"io"
 	"os"
 	"snab/pkg/common"
 	"snab/pkg/logger"
 	"snab/pkg/snabfile"
+	"strings"
 
 	"github.com/spf13/cobra"
 )
@@ -49,12 +51,18 @@ func execCobraCommand(task snabfile.Task, cmd *cobra.Command, args []string) {
 			logger.Fatal("error during getting exec directory", err)
 		}
 
+		// parse flags in command string from snabfile
 		execCmd, err := parseFlags(cmd.Use, c)
 		if err != nil {
 			logger.Fatal("error during getting exec directory", err)
 		}
 
-		logger.WithField("dir", execDir).Debugf("execute now `%s` ..", execCmd)
+		// re-add args to command for execution
+		if len(args) > 0 {
+			execCmd = fmt.Sprintf("%s %s", execCmd, strings.Join(args, " "))
+		}
+
+		logger.WithField("dir", execDir).Debugf("execute `%s` now ..", execCmd)
 
 		var stdoutBuf, stderrBuf bytes.Buffer
 		options := common.RunCommandOptions{
