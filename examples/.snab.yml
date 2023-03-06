@@ -23,5 +23,10 @@ tasks:
     description:
       short: 'bar script'
     dir: 'examples/foobar'
+    flags:
+      - name: myoption
+        shorthand: o
+        usage: My option to handle something
+        value: default-bar-value
     cmds:
-      - ./bar.sh
+      - sh bar.sh --option="{{ .myoption }}"
