@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-echo "I'm a awesome bar script"
+echo "I'm an awesome bar script"
