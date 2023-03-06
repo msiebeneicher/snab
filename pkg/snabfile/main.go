@@ -64,16 +64,15 @@ func NewSnabConfigByYaml() (Config, error) {
 }
 
 func getSnabfilePathInput() string {
+
 	fs := pflag.NewFlagSet("snab", pflag.ContinueOnError)
 
-	fs.String("snabfile", snabfileName, "Path to your snabfile")
-	// disable output for flags
-	fs.SetOutput(io.Discard)
+	fs.String("snabfile", snabfileName, "Path to your snabfile") //nolint:golint,unused
+	fs.SetOutput(io.Discard)                                     //disable output for flags
+	fs.Parse(os.Args[1:])                                        //nolint:golint,errcheck
 
-	fs.Parse(os.Args[1:])
-
-	viper.BindEnv("snabfile")
-	viper.BindPFlags(fs)
+	viper.BindEnv("snabfile") //nolint:golint,errcheck
+	viper.BindPFlags(fs)      //nolint:golint,errcheck
 
 	return viper.GetString("snabfile")
 }
