@@ -31,7 +31,15 @@ type Tasks map[string]Task
 type Task struct {
 	Description Description `yaml:"description"`
 	Commands    []string    `yaml:"cmds"`
+	Flags       []Flag      `yaml:"flags"`
 	Dir         string      `yaml:"dir"`
+}
+
+type Flag struct {
+	Name      string `yaml:"name"`
+	Shorthand string `yaml:"shorthand"`
+	Usage     string `yaml:"usage"`
+	Value     string `yaml:"value"`
 }
 
 type Description struct {

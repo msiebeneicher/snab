@@ -12,16 +12,21 @@ import (
 	"github.com/spf13/cobra"
 )
 
+// InitTaskCommands init dynamic commands with flags and args
 func InitTaskCommands(t snabfile.Tasks, root *cobra.Command) {
 	for use, task := range t {
-		logger.Info(use, ":Task:", task.Description.Short)
+		logger.WithField("task", task).Debugf("init task `%s`", use)
 
-		root.AddCommand(
-			newTaskCommand(use, task),
-		)
+		cmd := newTaskCommand(use, task)
+		if len(task.Flags) > 0 {
+			initFlagsForTask(task, cmd)
+		}
+
+		root.AddCommand(cmd)
 	}
 }
 
+// newTaskCommand returns new &cobra.Command
 func newTaskCommand(use string, task snabfile.Task) *cobra.Command {
 	return &cobra.Command{
 		Use:     use,
@@ -41,14 +46,19 @@ func execCobraCommand(task snabfile.Task, cmd *cobra.Command, args []string) {
 	for _, c := range task.Commands {
 		execDir, err := getExecDirectory(task.Dir)
 		if err != nil {
-			logger.Fatal(err)
+			logger.Fatal("error during getting exec directory", err)
 		}
 
-		logger.WithField("dir", execDir).Debugf("execute now `%s` ..", c)
+		execCmd, err := parseFlags(cmd.Use, c)
+		if err != nil {
+			logger.Fatal("error during getting exec directory", err)
+		}
+
+		logger.WithField("dir", execDir).Debugf("execute now `%s` ..", execCmd)
 
 		var stdoutBuf, stderrBuf bytes.Buffer
 		options := common.RunCommandOptions{
-			Command: c,
+			Command: execCmd,
 			Dir:     execDir,
 			Stdout:  io.MultiWriter(os.Stdout, &stdoutBuf),
 			Stderr:  io.MultiWriter(os.Stderr, &stderrBuf),
@@ -61,7 +71,7 @@ func execCobraCommand(task snabfile.Task, cmd *cobra.Command, args []string) {
 	}
 }
 
-// TODO: add proper base dir handling
+// getExecDirectory validate and return exec diretory path
 func getExecDirectory(d string) (string, error) {
 	isValid, err := common.IsDirectory(d)
 	if !isValid {
