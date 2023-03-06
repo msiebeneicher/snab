@@ -23,6 +23,7 @@ type Config struct {
 	Version       string      `yaml:"version"`
 	Description   Description `yaml:"description"`
 	Tasks         Tasks
+	Snabfile      string
 }
 
 type Tasks map[string]Task
@@ -39,10 +40,11 @@ type Description struct {
 	Example string `yaml:"example"`
 }
 
-func NewTasksByYaml() (Config, error) {
-	c := Config{}
-	p := getSnabfilePath()
-	yamlFile, err := os.ReadFile(p)
+func NewSnabConfigByYaml() (Config, error) {
+	c := Config{
+		Snabfile: getSnabfilePath(),
+	}
+	yamlFile, err := os.ReadFile(c.Snabfile)
 
 	if err != nil {
 		logger.Errorf("Error reading YAML file: %s\n", err)
@@ -56,7 +58,7 @@ func NewTasksByYaml() (Config, error) {
 func getSnabfilePathInput() string {
 	fs := pflag.NewFlagSet("snab", pflag.ContinueOnError)
 
-	fs.String("snabfile", "foo", "Path to your snabfile")
+	fs.String("snabfile", snabfileName, "Path to your snabfile")
 	// disable output for flags
 	fs.SetOutput(io.Discard)
 

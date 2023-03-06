@@ -24,7 +24,7 @@ func Execute() {
 }
 
 func init() {
-	c, _ := snabfile.NewTasksByYaml()
+	c, _ := snabfile.NewSnabConfigByYaml()
 
 	RootCmd = &cobra.Command{
 		Use:     c.Name,
