@@ -42,7 +42,7 @@ func init() {
 
 	cobra.OnInitialize(handleVerbosity)
 
-	command.InitTaskCommands(c.Tasks, RootCmd)
+	command.InitTaskCommands(c.Tasks, c.GetWorkingDir(), RootCmd)
 }
 
 func handleVerbosity() {
