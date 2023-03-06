@@ -43,6 +43,17 @@ type Flag struct {
 	Type      string `yaml:"type"`
 }
 
+type Description struct {
+	Short   string `yaml:"short"`
+	Long    string `yaml:"long"`
+	Example string `yaml:"example"`
+}
+
+// GetWorkingDir returns the path of the used snabfile as working directory
+func (c *Config) GetWorkingDir() string {
+	return filepath.Dir(c.Snabfile)
+}
+
 // GetValueAsBoolean returns the Flag.Value as bool
 func (f *Flag) GetValueAsBoolean() bool {
 	if f.Value == "true" {
@@ -57,12 +68,7 @@ func (f *Flag) GetValueAsBoolean() bool {
 	return false
 }
 
-type Description struct {
-	Short   string `yaml:"short"`
-	Long    string `yaml:"long"`
-	Example string `yaml:"example"`
-}
-
+// NewSnabConfigByYaml returns snabfile.Config
 func NewSnabConfigByYaml() (Config, error) {
 	c := Config{
 		Snabfile: getSnabfilePath(),

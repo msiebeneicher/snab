@@ -16,12 +16,11 @@ tasks:
       example: 'boa foo [--verbose] PATH'
     cmds:
       - ./foo.sh
-    dir: 'examples'
 
   bar:
     description:
       short: 'bar script'
-    dir: 'examples/foobar'
+    dir: 'foobar'
     flags:
       - name: optionA
         shorthand: o
