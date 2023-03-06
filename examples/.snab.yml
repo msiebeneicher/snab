@@ -23,9 +23,18 @@ tasks:
       short: 'bar script'
     dir: 'examples/foobar'
     flags:
-      - name: myoption
+      - name: optionA
         shorthand: o
         usage: My option to handle something
         value: default-bar-value
+        type: string
+      - name: optionB
+        usage: Second option without default value
+      - name: optionC
+        usage: Boolean option to handle something
+        value: false
+        type: bool
     cmds:
-      - sh bar.sh --option="{{ .myoption }}"
+      - ./bar.sh --optionA="{{ .optionA }}"
+      - ./bar.sh --optionA="{{ .optionA }}"{{ if .optionB }} --optionB="{{ .optionB }}"{{ end }}
+      - ./bar.sh --optionA="{{ .optionA }}"{{ if .optionC }} --isOptionC{{ end }}

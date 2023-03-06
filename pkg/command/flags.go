@@ -8,21 +8,35 @@ import (
 	"github.com/spf13/cobra"
 )
 
-type taskFlags map[string]map[string]*string
+type taskStringFlags map[string]map[string]*string
+type taskBoolFlags map[string]map[string]*bool
 
-// storage of command flags value pointer tFlags["cmd"]["flag"]=*string
-var tFlags taskFlags
+// storage of string task flags value pointer tStringFlags["cmd"]["flag"]=*string
+var tStringFlags taskStringFlags
+
+// storage of bool task flags value pointer tBoolFlags["cmd"]["flag"]=*bool
+var tBoolFlags taskBoolFlags
 
 // init tFlags for global usage
 func init() {
-	tFlags = taskFlags{}
+	tStringFlags = taskStringFlags{}
+	tBoolFlags = taskBoolFlags{}
 }
 
 // initFlagsForTask init string flags for task command
 func initFlagsForTask(t snabfile.Task, cmd *cobra.Command) {
-	tFlags[cmd.Use] = map[string]*string{}
+	tBoolFlags[cmd.Use] = map[string]*bool{}
+	tStringFlags[cmd.Use] = map[string]*string{}
+
 	for _, flag := range t.Flags {
-		tFlags[cmd.Use][flag.Name] = cmd.Flags().StringP(flag.Name, flag.Shorthand, flag.Value, flag.Usage)
+		switch fType := flag.Type; fType {
+		case "bool":
+			tBoolFlags[cmd.Use][flag.Name] = cmd.Flags().BoolP(flag.Name, flag.Shorthand, flag.GetValueAsBoolean(), flag.Usage)
+		case "string":
+			tStringFlags[cmd.Use][flag.Name] = cmd.Flags().StringP(flag.Name, flag.Shorthand, flag.Value, flag.Usage)
+		default:
+			tStringFlags[cmd.Use][flag.Name] = cmd.Flags().StringP(flag.Name, flag.Shorthand, flag.Value, flag.Usage)
+		}
 	}
 }
 
@@ -34,7 +48,17 @@ func parseFlags(use string, cmd string) (string, error) {
 	}
 
 	var parsed bytes.Buffer
-	err = tpl.Execute(&parsed, tFlags[use])
+
+	// merge task*Flags maps for parsing
+	tFlags := map[string]any{}
+	for k, v := range tStringFlags[use] {
+		tFlags[k] = *v
+	}
+	for k, v := range tBoolFlags[use] {
+		tFlags[k] = *v
+	}
+
+	err = tpl.Execute(&parsed, tFlags)
 	if err != nil {
 		return "", err
 	}

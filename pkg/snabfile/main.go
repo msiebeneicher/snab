@@ -40,6 +40,21 @@ type Flag struct {
 	Shorthand string `yaml:"shorthand"`
 	Usage     string `yaml:"usage"`
 	Value     string `yaml:"value"`
+	Type      string `yaml:"type"`
+}
+
+// GetValueAsBoolean returns the Flag.Value as bool
+func (f *Flag) GetValueAsBoolean() bool {
+	if f.Value == "true" {
+		return true
+	}
+
+	if f.Value == "false" {
+		return false
+	}
+
+	logger.Warnf("unable to convert value `%s` as clear boolean. converted to `false` now.", f.Value)
+	return false
 }
 
 type Description struct {
