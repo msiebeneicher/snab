@@ -43,7 +43,7 @@ jobs:
           shfmt 3.5.1
 
     - name: Install go-mods
-      run: go mod download
+      run: go mod download && go run . version
 
     - name: Run pre-commit
       if: steps.has_pre_commit_config_file.outputs.files_exists == 'true'
