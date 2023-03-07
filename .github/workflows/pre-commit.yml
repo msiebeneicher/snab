@@ -38,7 +38,7 @@ jobs:
       uses: asdf-vm/actions/install@v1
       with:
         tool_versions: |
-          golangci-lint 1.50.1
+          golangci-lint 1.51.2
           shellcheck 0.8.0
           shfmt 3.5.1
 
