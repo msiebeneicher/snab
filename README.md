@@ -32,6 +32,9 @@
     - [ENV](#env)
   - [Schema](#schema)
     - [Snabfile](#snabfile-1)
+    - [Description](#description)
+    - [Task](#task)
+    - [Flag](#flag)
 
 ## Features
 
@@ -192,4 +195,37 @@ SnaB provide some default subcommands: `<snap|app> snab --help`
 
 #### Snabfile
 
-_tbd_
+| Attribute      | Type                        | Default | Description |
+| -------------- | ----------------------------| ------- | ----------- |
+| schema_version | string                      | 0.1     | Version of the snabfile. The current version is `0.1` |
+| name           | string                      |         | Name ouf your snab bundle |
+| version        | string                      |         | Version ouf your snab bundle |
+| description    | [Description](#description) |         | Description struct |
+| tasks          | [map[string]Task](#task)    |         | A set of tasks. The key also reflects the final command name. |
+
+#### Description
+
+| Attribute | Type   | Default | Description |
+| --------- | ------ | ------- | ----------- |
+| short     | string |         | Short description shown in the 'help' output |
+| long      | string |         | Short message shown in the 'help this-command' output |
+| example   | string |         | Example of how to use the command |
+
+#### Task
+
+| Attribute   | Type                        | Default                     | Description |
+| ----------- | --------------------------- | --------------------------- | ----------- |
+| description | [Description](#description) |                             | Description struct |
+| dir         | string                      | _current working directory_ | The directory in which this command should run |
+| flags       | [[]Flag](#flag)             |                             | Array of Flag structs |
+| cmds        | []string                    |                             | Array of commands to be execute |
+
+#### Flag
+
+| Attribute | Type   | Default | Description |
+| --------- | ------ | ------- | ----------- |
+| name      | string |         | Name of the flag. Used in 'help' output and can be used as go-template var in cmds strings. |
+| shorthand | string |         | Shorthand letter that can be used after a single dash |
+| usage     | string |         | Usage string used in 'help' output |
+| value     | string |         | Default value of the flag |
+| type      | string | string  | Type of the Flag value. Possible are the "bool" and "string" |
