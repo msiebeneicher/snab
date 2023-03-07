@@ -42,5 +42,9 @@ repos:
       - id: go-imports
       - id: no-go-testing
       - id: golangci-lint # Needs golangci-lint: https://golangci-lint.run/usage/install/#local-installation
-        exclude: .*\/hostedtoolcache\/.*
+        exclude: |
+          (?x)(
+              /hostedtoolcache/|
+              /go/pkg/mod/
+          )
       #- id: go-unit-tests
