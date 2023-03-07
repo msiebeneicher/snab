@@ -16,3 +16,6 @@
 
 # Build directories
 dist/
+
+# Compiled binary
+snab
