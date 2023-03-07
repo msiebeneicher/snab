@@ -1,8 +1,13 @@
+<div align="center">
+  <img src=".github/images/snab_logo.svg" width="200px" height="200px" />
+
+  <h1>SnaB - Snake Basket</h1>
+
+</div>
+
 # SnaB - Snake Basket [![pre-commit](https://github.com/msiebeneicher/snab/actions/workflows/pre-commit.yml/badge.svg)](https://github.com/msiebeneicher/snab/actions/workflows/pre-commit.yml)
 
-SnaB is a shell runner, inspired by [taks](https://taskfile.dev/) and aims to enable you to bundle shell script and commands like a powerful modern CLI applications with the help of [Cobra](https://cobra.dev/)
-
-Content:
+**Content:**
 - [SnaB - Snake Basket ](#snab---snake-basket-)
   - [Features](#features)
   - [Installation](#installation)
