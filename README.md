@@ -126,6 +126,8 @@ tasks:
 
 By default all arguments will forward to the commands of your task.
 
+The snab command `snab foo my-first-argument my-second-argument`  form the example will execute `./foo.sh my-first-argument my-second-argument` under the hood.
+
 ## API Reference
 
 ### CLI
