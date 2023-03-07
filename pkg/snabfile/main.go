@@ -70,13 +70,20 @@ func (f *Flag) GetValueAsBoolean() bool {
 
 // NewSnabConfigByYaml returns snabfile.Config
 func NewSnabConfigByYaml() (Config, error) {
+	snabfile, err := getSnabfilePath()
 	c := Config{
-		Snabfile: getSnabfilePath(),
+		Snabfile: snabfile,
 	}
-	yamlFile, err := os.ReadFile(c.Snabfile)
 
+	if snabfile == "" {
+		logger.Debug(err)
+		logger.Warnln("no snabfile set")
+		return c, nil
+	}
+
+	yamlFile, err := os.ReadFile(c.Snabfile)
 	if err != nil {
-		logger.Errorf("Error reading YAML file: %s\n", err)
+		logger.Errorf("error reading YAML file: %s\n", err)
 		return c, err
 	}
 
@@ -98,15 +105,15 @@ func getSnabfilePathInput() string {
 	return viper.GetString("snabfile")
 }
 
-func getSnabfilePath() string {
+func getSnabfilePath() (string, error) {
 	p := getSnabfilePathInput()
 	if p == "" {
-		logger.Fatalln("Please set a path to your snabfile")
+		return "", fmt.Errorf("please set a path to your snabfile")
 	}
 
 	snabfilePath, err := filepath.Abs(p)
 	if err != nil {
-		logger.WithField("err", err).Fatalln("snabfile not found: path is not valid")
+		return "", fmt.Errorf("snabfile not found: path is not valid: %s", err)
 	}
 
 	if !strings.Contains(snabfilePath, snabfileName) {
@@ -115,8 +122,8 @@ func getSnabfilePath() string {
 
 	isFile, err := common.IsFile(snabfilePath)
 	if !isFile || err != nil {
-		logger.WithField("err", err).Fatalf("snabfile `%s` not found", snabfilePath)
+		return "", fmt.Errorf("snabfile `%s` not found", snabfilePath)
 	}
 
-	return snabfilePath
+	return snabfilePath, nil
 }
