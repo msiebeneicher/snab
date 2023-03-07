@@ -169,7 +169,7 @@ boa [--flags] [commands...] [CLI_ARGS...]
 
 #### SnaB Commands
 
-SnaB provide some default subcommands: `<snap|app> snab --help`
+SnaB provide some default subcommands: `<snab|app> snab --help`
 
 | Command       | Description                                 |
 | ------------- | ------------------------------------------- |
