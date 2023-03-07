@@ -3,28 +3,31 @@
 
   <h1>SnaB - Snake Basket</h1>
 
+  <p>
+    <a href="https://github.com/msiebeneicher/snab/actions/workflows/pre-commit.yml">
+      <img src="https://github.com/msiebeneicher/snab/actions/workflows/pre-commit.yml/badge.svg" />
+    </a>
+  </p>
+
 </div>
 
-# SnaB - Snake Basket [![pre-commit](https://github.com/msiebeneicher/snab/actions/workflows/pre-commit.yml/badge.svg)](https://github.com/msiebeneicher/snab/actions/workflows/pre-commit.yml)
-
 **Content:**
-- [SnaB - Snake Basket ](#snab---snake-basket-)
-  - [Features](#features)
-  - [Installation](#installation)
-    - [Get The Binary](#get-the-binary)
-  - [Usage](#usage)
-    - [Getting started](#getting-started)
-    - [Snabfile](#snabfile)
-    - [Command directory](#command-directory)
-    - [Flags](#flags)
-    - [Forwarding CLI arguments to commands](#forwarding-cli-arguments-to-commands)
-  - [API Reference](#api-reference)
-    - [CLI](#cli)
-      - [SnaB Commands](#snab-commands)
-      - [Global Flags](#global-flags)
-      - [ENV](#env)
-    - [Schema](#schema)
-      - [Snabfile](#snabfile-1)
+- [Features](#features)
+- [Installation](#installation)
+  - [Get The Binary](#get-the-binary)
+- [Usage](#usage)
+  - [Getting started](#getting-started)
+  - [Snabfile](#snabfile)
+  - [Command directory](#command-directory)
+  - [Flags](#flags)
+  - [Forwarding CLI arguments to commands](#forwarding-cli-arguments-to-commands)
+- [API Reference](#api-reference)
+  - [CLI](#cli)
+    - [SnaB Commands](#snab-commands)
+    - [Global Flags](#global-flags)
+    - [ENV](#env)
+  - [Schema](#schema)
+    - [Snabfile](#snabfile-1)
 
 ## Features
 
