@@ -7,4 +7,4 @@ run:
   # "/" will be replaced by current OS file path separator to properly work on Windows.
   skip-dirs:
     - '.*/hostedtoolcache.*'
-    - '.*/mvdan.cc.*'
+    - '.*/go/pkg/mod.*'
