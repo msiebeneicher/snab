@@ -49,7 +49,7 @@
 
 You can download the binary from the [releases page](https://github.com/msiebeneicher/snab/releases) on GitHub and add to your $PATH.
 
-The task_checksums.txt file contains the SHA-256 checksum for each file.
+The checksums.txt file contains the SHA-256 checksum for each file.
 
 ## Usage
 
