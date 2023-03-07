@@ -7,7 +7,10 @@ import (
 )
 
 func init() {
-	SnabCmd.AddCommand(snab.InstallCmd, snab.UninstallCmd)
+	docsGenCmd := snab.InitDocsGenCmd(RootCmd)
+	snab.DocsCmd.AddCommand(docsGenCmd)
+
+	SnabCmd.AddCommand(snab.InstallCmd, snab.UninstallCmd, snab.DocsCmd)
 	RootCmd.AddCommand(SnabCmd)
 }
 
