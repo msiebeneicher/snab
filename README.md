@@ -13,7 +13,7 @@
   </p>
 
   <p>
-    SnaB is a shell runner, inspired by  <a href="https://taskfile.dev/">task</a> and aims to enable you to bundle shell script and commands like a powerful modern CLI applications with the help of <a href="https://cobra.dev/">Cobra</a>
+    SnaB is a shell runner, inspired by  <a href="https://taskfile.dev/">task</a> and <a href="https://cobra.dev/">Cobra</a>, and aims to enable you to bundle shell script and commands like a powerful modern CLI applications
   </p>
   <hr />
 </div>
