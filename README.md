@@ -13,13 +13,19 @@
   </p>
 
   <p>
-    SnaB is a shell runner, inspired by  <a href="https://taskfile.dev/">task</a> and <a href="https://cobra.dev/">Cobra</a>, and aims to enable you to bundle shell script and commands like a powerful modern CLI applications
+    SnaB is a shell runner, inspired by  <a href="https://taskfile.dev/">task</a> and <a href="https://cobra.dev/">Cobra</a>, and aims to enable you to bundle shell script and commands like a powerful modern CLI application
   </p>
   <hr />
 </div>
 
+**Features:**
+
+- Easy installation: just download a single binary, add to $PATH and you're done!
+- Simulate own application binary: install and uninstall a starting script of your bundle with simple commands
+- Tab completion: Usable tab autocompletion for your bundle
+- Generate docs: generate automatically docs for your bundle with a simple command
+
 **Content:**
-- [Features](#features)
 - [Installation](#installation)
   - [Get The Binary](#get-the-binary)
 - [Usage](#usage)
@@ -39,12 +45,6 @@
     - [Task](#task)
     - [Flag](#flag)
 
-## Features
-
-- Easy installation: just download a single binary, add to $PATH and you're done!
-- Simulate own application binary: install and uninstall a starting script of your bundle with simple commands
-- Tab completion: Usable tab autocompletion for your bundle
-- Generate docs: generate automatically docs for your bundle with a simple command
 
 ## Installation
 
