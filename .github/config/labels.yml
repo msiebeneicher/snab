@@ -1,0 +1,51 @@
+# github defaults
+
+- name: bug
+  color: '#d73a4a'
+  description: Something isn't working
+
+- name: documentation
+  color: '#0075ca'
+  description: Improvements or additions to documentation
+
+- name: duplicate
+  color: '#cfd3d7'
+  description: This issue or pull request already exists
+
+- name: enhancement
+  color: '#a5d8ff'
+  description: Something could be working better
+
+- name: good first issue
+  color: '#7057ff'
+  description: Good for newcomers
+
+- name: help wanted
+  color: '#008672'
+  description: Extra attention is needed
+
+- name: invalid
+  color: '#d73a4a'
+  description: This doesn't seem right
+
+- name: question
+  color: '#d876e3'
+  description: Further information is requested
+
+- name: wontfix
+  color: '#ffffff'
+  description: This will not be worked on
+
+# project
+
+- name: chore
+  color: '#0052CC'
+  description: A routine task, especially a household one
+
+- name: dependencies
+  color: '#0052CC'
+  description: Pull requests that update a dependency file
+
+- name: wip
+  color: '#d73a4a'
+  description: Issues or Pull Requests with this label will never be considered stale
