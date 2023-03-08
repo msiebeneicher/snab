@@ -15,6 +15,11 @@
   <p>
     SnaB is a shell runner, inspired by  <a href="https://taskfile.dev/">task</a> and <a href="https://cobra.dev/">Cobra</a>, and aims to enable you to bundle shell script and commands like a powerful modern CLI application
   </p>
+
+  <p>
+    <img src=".github/images/snab_demo.gif" height="350px" />
+  </p>
+
   <hr />
 </div>
 
@@ -44,6 +49,7 @@
     - [Description](#description)
     - [Task](#task)
     - [Flag](#flag)
+    - [Example](#example)
 
 
 ## Installation
@@ -232,3 +238,40 @@ SnaB provide some default subcommands: `<snab|app> snab --help`
 | usage     | string |         | Usage string used in 'help' output |
 | value     | string |         | Default value of the flag |
 | type      | string | string  | Type of the Flag value. Possible are the "bool" and "string" |
+
+#### Example
+
+Full `.snab.yml` example:
+
+```yaml
+schema_version: '0.1'
+
+name: dummy
+version: '0.1.0'
+
+description:
+  short: Example app
+  long: Example app to provide shell script collection under /usr/local/bin/dummy
+  example: dummy --help
+
+tasks:
+  foo:
+    description:
+      short: foo script
+      long: echo awesome foo script name
+      example: dummy foo [--verbose]
+    cmds:
+      - echo "I am foo"
+
+  bar:
+    description:
+      short: bar script
+    flags:
+      - name: name
+        shorthand: n
+        usage: Your name to say hello
+        value: Max
+        type: string
+    cmds:
+      -  echo "Hello {{ .Name }}! I am bar."
+```
