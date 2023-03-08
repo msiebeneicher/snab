@@ -7,6 +7,9 @@
     <a href="https://github.com/msiebeneicher/snab/actions/workflows/pre-commit.yml">
       <img src="https://github.com/msiebeneicher/snab/actions/workflows/pre-commit.yml/badge.svg" />
     </a>
+    <a href="https://github.com/msiebeneicher/snab/actions/workflows/go-ci.yml">
+      <img src="https://github.com/msiebeneicher/snab/actions/workflows/go-ci.yml/badge.svg" />
+    </a>
   </p>
 
   <p>
