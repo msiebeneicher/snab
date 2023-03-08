@@ -1,5 +1,8 @@
 name: sync-labels
 
+permissions:
+  issues: write
+
 on:
   push:
     branches:
