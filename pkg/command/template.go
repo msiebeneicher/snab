@@ -2,6 +2,7 @@ package command
 
 import (
 	"bytes"
+	"strings"
 	"text/template"
 )
 
@@ -28,5 +29,5 @@ func parseTaskCommand(use string, cmd string) (string, error) {
 		return "", err
 	}
 
-	return parsed.String(), nil
+	return strings.Trim(parsed.String(), " \\"), nil
 }
