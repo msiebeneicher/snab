@@ -1,9 +1,7 @@
 package command
 
 import (
-	"bytes"
 	"snab/pkg/snabfile"
-	"text/template"
 
 	"github.com/spf13/cobra"
 )
@@ -38,30 +36,4 @@ func initFlagsForTask(t snabfile.Task, cmd *cobra.Command) {
 			tStringFlags[cmd.Use][flag.Name] = cmd.Flags().StringP(flag.Name, flag.Shorthand, flag.Value, flag.Usage)
 		}
 	}
-}
-
-// parseFlags will parse setted flags by go-template
-func parseFlags(use string, cmd string) (string, error) {
-	tpl, err := template.New("cmd").Parse(cmd)
-	if err != nil {
-		return "", err
-	}
-
-	var parsed bytes.Buffer
-
-	// merge task*Flags maps for parsing
-	tFlags := map[string]any{}
-	for k, v := range tStringFlags[use] {
-		tFlags[k] = *v
-	}
-	for k, v := range tBoolFlags[use] {
-		tFlags[k] = *v
-	}
-
-	err = tpl.Execute(&parsed, tFlags)
-	if err != nil {
-		return "", err
-	}
-
-	return parsed.String(), nil
 }

@@ -53,7 +53,7 @@ func execCobraCommand(task snabfile.Task, cmd *cobra.Command, workingDir string,
 		}
 
 		// parse flags in command string from snabfile
-		execCmd, err := parseFlags(cmd.Use, c)
+		execCmd, err := parseTaskCommand(cmd.Use, c)
 		if err != nil {
 			logger.WithField("err", err).Fatalf("error during getting exec directory `%s`", task.Dir)
 		}
