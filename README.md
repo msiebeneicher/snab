@@ -50,6 +50,8 @@
     - [Task](#task)
     - [Flag](#flag)
     - [Example](#example)
+- [Know issues](#know-issues)
+  - [Flag parsing errors when hyphen is used](#flag-parsing-errors-when-hyphen-is-used)
 
 
 ## Installation
@@ -274,4 +276,36 @@ tasks:
         type: string
     cmds:
       -  echo "Hello {{ .Name }}! I am bar."
+```
+
+## Know issues
+
+### Flag parsing errors when hyphen is used
+
+Failing example:
+
+```yaml
+    # [...]
+
+    flags:
+      - name: no-fetch
+        usage: One example for hyphen usage
+        type: bool
+        value: false
+
+    cmds:
+      - ./my-command {{ if .no-fetch }}--no-fetch{{ end }}
+```
+
+Issue is that you can not use the flag name directly.
+`if .no-fetch` will not work and end up in a parsing error.
+
+As a workaround you can use the go-template index function: `if index . "no-fetch"`
+
+Working example:
+
+```yaml
+    # [...]
+    cmds:
+      - ./my-command {{ if index . "no-fetch" }}--no-fetch{{ end }}
 ```
