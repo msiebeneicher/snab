@@ -1,16 +1,16 @@
 package cmd
 
 import (
-	"snab/cmd/snab"
+	"snab/cmd/origin"
 
 	"github.com/spf13/cobra"
 )
 
 func init() {
-	docsGenCmd := snab.InitDocsGenCmd(RootCmd)
-	snab.DocsCmd.AddCommand(docsGenCmd)
+	docsGenCmd := origin.InitDocsGenCmd(RootCmd)
+	origin.DocsCmd.AddCommand(docsGenCmd)
 
-	OriginCmd.AddCommand(snab.InstallCmd, snab.UninstallCmd, snab.DocsCmd)
+	OriginCmd.AddCommand(origin.InstallCmd, origin.UninstallCmd, origin.DocsCmd)
 	RootCmd.AddCommand(OriginCmd)
 }
 
