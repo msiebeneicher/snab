@@ -1,6 +1,6 @@
 // generating docs for all commands
 // see https://github.com/spf13/cobra/blob/main/doc/README.md for further information
-package snab
+package origin
 
 import (
 	"path/filepath"

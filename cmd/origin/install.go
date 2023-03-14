@@ -1,4 +1,4 @@
-package snab
+package origin
 
 import (
 	"fmt"
@@ -13,7 +13,11 @@ import (
 var InstallCmd = &cobra.Command{
 	Use:   "install",
 	Short: "Install snab basket under /usr/local/bin",
-	Long:  `Install snab basket under /usr/local/bin`,
+	Long: `Install snab basket under /usr/local/bin
+
+Defined commands:
+  .my-command --foo
+`,
 	Run: func(cmd *cobra.Command, args []string) {
 		c, _ := snabfile.NewSnabConfigByYaml()
 		scriptPath := fmt.Sprintf("/usr/local/bin/%s", c.Name)

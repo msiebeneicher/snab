@@ -1,4 +1,4 @@
-package snab
+package origin
 
 import (
 	"fmt"
