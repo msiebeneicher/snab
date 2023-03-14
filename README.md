@@ -180,7 +180,7 @@ boa [--flags] [commands...] [CLI_ARGS...]
 
 #### SnaB Commands
 
-SnaB provide some default subcommands: `<snab|app> snab --help`
+SnaB provide some default subcommands: `<snab|app> origin --help`
 
 | Command       | Description                                 |
 | ------------- | ------------------------------------------- |
