@@ -37,6 +37,7 @@
   - [Getting started](#getting-started)
   - [Snabfile](#snabfile)
   - [Command directory](#command-directory)
+  - [Sub-Commands and grouping](#sub-commands-and-grouping)
   - [Flags](#flags)
   - [Forwarding CLI arguments to commands](#forwarding-cli-arguments-to-commands)
 - [API Reference](#api-reference)
@@ -114,6 +115,34 @@ tasks:
     dir: foobar
     cmds:
       - ./bar.sh
+```
+
+### Sub-Commands and grouping
+
+You can add one or more commands to a parent command by setting the parent name in your task config:
+
+```yaml
+schema_version: '0.2'
+
+# [...]
+
+tasks:
+  foo:
+    description:
+      example: 'dummy foo [--verbose]'
+    cmds:
+      - echo "I am foo"
+
+  bar:
+    description:
+      short: bar category
+
+  foobar:
+    parent: bar
+    description:
+      example: 'dummy bar foobar [--verbose]'
+    cmds:
+      - echo "I am bar/foobar"
 ```
 
 ### Flags
@@ -208,7 +237,7 @@ SnaB provide some default subcommands: `<snab|app> origin --help`
 
 | Attribute      | Type                        | Default | Description |
 | -------------- | ----------------------------| ------- | ----------- |
-| schema_version | string                      | 0.1     | Version of the snabfile. The current version is `0.1` |
+| schema_version | string                      | 0.2     | Version of the snabfile. The current version is `0.2` |
 | name           | string                      |         | Name ouf your snab bundle |
 | version        | string                      |         | Version ouf your snab bundle |
 | description    | [Description](#description) |         | Description struct |
@@ -224,12 +253,13 @@ SnaB provide some default subcommands: `<snab|app> origin --help`
 
 #### Task
 
-| Attribute   | Type                        | Default                     | Description |
-| ----------- | --------------------------- | --------------------------- | ----------- |
-| description | [Description](#description) |                             | Description struct |
+| Attribute   | Type                        | Default                     | Description                                    |
+| ----------- | --------------------------- | --------------------------- | ---------------------------------------------- |
+| parent      | string                      |                             | Add task commands to this parent command.      |
+| description | [Description](#description) |                             | Description struct                             |
 | dir         | string                      | _current working directory_ | The directory in which this command should run |
-| flags       | [[]Flag](#flag)             |                             | Array of Flag structs |
-| cmds        | []string                    |                             | Array of commands to be execute |
+| flags       | [[]Flag](#flag)             |                             | Array of Flag structs                          |
+| cmds        | []string                    |                             | Array of commands to be execute                |
 
 #### Flag
 
@@ -246,7 +276,7 @@ SnaB provide some default subcommands: `<snab|app> origin --help`
 Full `.snab.yml` example:
 
 ```yaml
-schema_version: '0.1'
+schema_version: '0.2'
 
 name: dummy
 version: '0.1.0'
@@ -257,6 +287,7 @@ description:
   example: dummy --help
 
 tasks:
+  # simple command
   foo:
     description:
       short: foo script
@@ -265,6 +296,7 @@ tasks:
     cmds:
       - echo "I am foo"
 
+  # command with flag
   bar:
     description:
       short: bar script
@@ -276,6 +308,22 @@ tasks:
         type: string
     cmds:
       -  echo "Hello {{ .Name }}! I am bar."
+
+  # category without own cmds execution
+  cat:
+    description:
+      short: A category to add commands as subcommands
+      long:  Only a category for further subcommands
+
+  # subcommand unter `cat`
+  foobar:
+    parent: cat
+    description:
+      short: foobar sub command
+      long: foobar command under cat
+      example: dummy cat foobar [--verbose]
+    cmds:
+      - echo "I am foobar"
 ```
 
 ## Know issues
