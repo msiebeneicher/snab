@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"snab/cmd/origin"
 	"snab/pkg/command"
 	"snab/pkg/logger"
 	"snab/pkg/snabfile"
@@ -24,6 +25,11 @@ func Execute() {
 }
 
 func init() {
+	initRootCmd()
+	initSnabCommands()
+}
+
+func initRootCmd() {
 	c, _ := snabfile.NewSnabConfigByYaml()
 
 	RootCmd = &cobra.Command{
@@ -43,6 +49,14 @@ func init() {
 	cobra.OnInitialize(handleVerbosity)
 
 	command.InitTaskCommands(c.Tasks, c.GetWorkingDir(), RootCmd)
+}
+
+func initSnabCommands() {
+	docsGenCmd := origin.InitDocsGenCmd(RootCmd)
+	origin.DocsCmd.AddCommand(docsGenCmd)
+
+	OriginCmd.AddCommand(origin.InstallCmd, origin.UninstallCmd, origin.DocsCmd)
+	RootCmd.AddCommand(OriginCmd, VersionCmd)
 }
 
 func handleVerbosity() {
