@@ -17,6 +17,8 @@ import (
 // default SnaB file name
 const snabfileName = ".snab.yml"
 
+//const latestSchemaVersion = "0.2"
+
 type Config struct {
 	SchemaVersion int         `yaml:"schema_version"`
 	Name          string      `yaml:"name"`
@@ -29,6 +31,7 @@ type Config struct {
 type Tasks map[string]Task
 
 type Task struct {
+	Parent      string      `yaml:"parent"`
 	Description Description `yaml:"description"`
 	Commands    []string    `yaml:"cmds"`
 	Flags       []Flag      `yaml:"flags"`

@@ -29,7 +29,8 @@ jobs:
         with:
           version: "2023.1.2"
 
-      # Run unit tests here, if you start implementing some.
+      - name: Run go test
+        run: go test ./...
 
   compile:
     name: Compile application
