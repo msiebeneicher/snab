@@ -52,8 +52,8 @@ type Description struct {
 	Example string `yaml:"example"`
 }
 
-// GetWorkingDir returns the path of the used snabfile as working directory
-func (c *Config) GetWorkingDir() string {
+// GetSnabfileDir returns the path of the used snabfile as working directory
+func (c *Config) GetSnabfileDir() string {
 	return filepath.Dir(c.Snabfile)
 }
 

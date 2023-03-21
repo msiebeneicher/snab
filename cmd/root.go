@@ -48,7 +48,7 @@ func initRootCmd() {
 
 	cobra.OnInitialize(handleVerbosity)
 
-	command.InitTaskCommands(c.Tasks, c.GetWorkingDir(), RootCmd)
+	command.InitTaskCommands(c.Tasks, c.GetSnabfileDir(), RootCmd)
 }
 
 func initSnabCommands() {

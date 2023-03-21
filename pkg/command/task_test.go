@@ -33,7 +33,7 @@ func TestInitTaskCommands(t *testing.T) {
 	tasks["task1"] = task1
 	tasks["task2"] = task2
 
-	InitTaskCommands(tasks, "workingDir", &cmd)
+	InitTaskCommands(tasks, "snabfileDir", &cmd)
 }
 
 func TestInitTaskCommandsWithInvalidParent(t *testing.T) {
@@ -58,7 +58,7 @@ func TestInitTaskCommandsWithInvalidParent(t *testing.T) {
 	tasks["task1"] = task1
 	tasks["task2"] = task2
 
-	InitTaskCommands(tasks, "workingDir", &cmd)
+	InitTaskCommands(tasks, "snabfileDir", &cmd)
 }
 
 func TestNewTaskCommand(t *testing.T) {

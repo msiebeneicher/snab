@@ -22,13 +22,13 @@ const maxSubCommandLevel = 3
 var taskCommands = map[string]*cobra.Command{}
 
 // InitTaskCommands init dynamic commands with flags and args
-func InitTaskCommands(t snabfile.Tasks, workingDir string, root *cobra.Command) {
+func InitTaskCommands(t snabfile.Tasks, snabfileDir string, root *cobra.Command) {
 	// init root-commands
 	for use, task := range t {
 		if task.Parent == "" {
 			logger.WithField("task", task).Debugf("init task `%s`", use)
 
-			cmd := newTaskCommand(use, task, workingDir)
+			cmd := newTaskCommand(use, task, snabfileDir)
 			if len(task.Flags) > 0 {
 				initFlagsForTask(task, cmd)
 			}
@@ -38,12 +38,12 @@ func InitTaskCommands(t snabfile.Tasks, workingDir string, root *cobra.Command) 
 		}
 	}
 
-	initTaskSubCommands(t, workingDir, 0)
+	initTaskSubCommands(t, snabfileDir, 0)
 }
 
 // initTaskSubCommands inits sub-commands defined by task.Parent
 // this function works with a simple re-try functionality instead of a parent/child tree
-func initTaskSubCommands(t snabfile.Tasks, workingDir string, try int) {
+func initTaskSubCommands(t snabfile.Tasks, snabfileDir string, try int) {
 	missParentCommand := false
 	logger.Debugf("initTaskSubCommands try `%d`", try)
 
@@ -66,7 +66,7 @@ func initTaskSubCommands(t snabfile.Tasks, workingDir string, try int) {
 				continue
 			}
 
-			cmd := newTaskCommand(use, task, workingDir)
+			cmd := newTaskCommand(use, task, snabfileDir)
 			if len(task.Flags) > 0 {
 				initFlagsForTask(task, cmd)
 			}
@@ -95,12 +95,12 @@ func initTaskSubCommands(t snabfile.Tasks, workingDir string, try int) {
 			return
 		}
 
-		initTaskSubCommands(t, workingDir, try+1)
+		initTaskSubCommands(t, snabfileDir, try+1)
 	}
 }
 
 // newTaskCommand returns new &cobra.Command
-func newTaskCommand(use string, task snabfile.Task, workingDir string) *cobra.Command {
+func newTaskCommand(use string, task snabfile.Task, snabfileDir string) *cobra.Command {
 	c := &cobra.Command{
 		Use:     use,
 		Short:   task.Description.Short,
@@ -110,7 +110,7 @@ func newTaskCommand(use string, task snabfile.Task, workingDir string) *cobra.Co
 
 	if len(task.Commands) > 0 {
 		c.Run = func(cmd *cobra.Command, args []string) {
-			execCobraCommand(task, cmd, workingDir, args)
+			execCobraCommand(task, cmd, snabfileDir, args)
 		}
 	}
 
@@ -118,11 +118,11 @@ func newTaskCommand(use string, task snabfile.Task, workingDir string) *cobra.Co
 }
 
 // execCobraCommand will used and executed in cobra.Command.Run
-func execCobraCommand(task snabfile.Task, cmd *cobra.Command, workingDir string, args []string) {
+func execCobraCommand(task snabfile.Task, cmd *cobra.Command, snabfileDir string, args []string) {
 	ctx := context.Background()
 
 	for _, c := range task.Commands {
-		execDir, err := getExecDirectory(workingDir, task.Dir)
+		execDir, err := getExecDirectory(snabfileDir, task.Dir)
 		if err != nil {
 			logger.WithField("err", err).Fatalf("error during getting exec directory `%s`", task.Dir)
 		}
@@ -156,9 +156,17 @@ func execCobraCommand(task snabfile.Task, cmd *cobra.Command, workingDir string,
 }
 
 // getExecDirectory validate and return exec directory path
-func getExecDirectory(workingDir string, taskDir string) (string, error) {
+func getExecDirectory(snabfileDir string, taskDir string) (string, error) {
+	// if taskDir == "" {
+	// 	wd, err := os.Getwd()
+	// 	if err != nil {
+	// 		return "", err
+	// 	}
+	// 	taskDir = fmt.Sprintf("%s/%s", wd, taskDir)
+	// }
+
 	if !filepath.IsAbs(taskDir) {
-		taskDir = fmt.Sprintf("%s/%s", workingDir, taskDir)
+		taskDir = fmt.Sprintf("%s/%s", snabfileDir, taskDir)
 	}
 
 	d, err := filepath.Abs(taskDir)
