@@ -39,6 +39,7 @@
   - [Command directory](#command-directory)
   - [Sub-Commands and grouping](#sub-commands-and-grouping)
   - [Flags](#flags)
+  - [Variables](#variables)
   - [Forwarding CLI arguments to commands](#forwarding-cli-arguments-to-commands)
 - [API Reference](#api-reference)
   - [CLI](#cli)
@@ -70,7 +71,7 @@ The checksums.txt file contains the SHA-256 checksum for each file.
 Create a file called `.snab.yml` in the root of your project. The cmds attribute should contain the commands of a task. Each task reflects and command your final cli app. The example below allows provide a command `foo` which will execute the `foo.sh` script in the same directory.
 
 ```yaml
-schema_version: '0.1'
+schema_version: '0.2'
 
 name: boa
 version: '1.0.0'
@@ -103,10 +104,10 @@ You can set also set a path to your snabfile globally by using the `--snabfile .
 
 ### Command directory
 
-By default, commands will be executed in the directory where the Snabfile is located. But you can easily make the command run in another folder, informing dir:
+By default, commands will be executed in the current working directory. But you can easily make the commands run in another folder, informing dir:
 
 ```yaml
-schema_version: '0.1'
+schema_version: '0.2'
 
 # [...]
 
@@ -153,7 +154,7 @@ The defined flags can be used in your commands by [Go's template engine](https:/
 You can choose between `string` and `boolean` flags.
 
 ```yaml
-schema_version: '0.1'
+schema_version: '0.2'
 
 # [...]
 
@@ -177,6 +178,27 @@ tasks:
       - ./bar.sh --optionA="{{ .optionA }}"{{ if .optionC }} --isOptionC{{ end }}
 ```
 
+### Variables
+
+You have access to some default variables, which can be used in your commands:
+
+| Variable    | Type   | Description                    |
+| ----------- | ------ | ------------------------------ |
+| snabfileDir | string | Path to your snabfile location |
+
+```yaml
+schema_version: '0.2'
+
+# [...]
+
+tasks:
+  foo:
+    description:
+      example: 'exec foo.sh'
+    cmds:
+      - "{{ .snabfileDir }}/bin/foo.sh"
+```
+
 ### Forwarding CLI arguments to commands
 
 By default all arguments will forward to the commands of your task.
@@ -196,7 +218,7 @@ snab [--flags] [commands...] [CLI_ARGS...]
 If you installed you bundle you can execute your app by the defined name in your snabfile:
 
 ```yaml
-schema_version: '0.1'
+schema_version: '0.2'
 
 name: boa
 
@@ -253,13 +275,13 @@ SnaB provide some default subcommands: `<snab|app> origin --help`
 
 #### Task
 
-| Attribute   | Type                        | Default                     | Description                                    |
-| ----------- | --------------------------- | --------------------------- | ---------------------------------------------- |
-| parent      | string                      |                             | Add task commands to this parent command.      |
-| description | [Description](#description) |                             | Description struct                             |
-| dir         | string                      | _current working directory_ | The directory in which this command should run |
-| flags       | [[]Flag](#flag)             |                             | Array of Flag structs                          |
-| cmds        | []string                    |                             | Array of commands to be execute                |
+| Attribute   | Type                        | Default             | Description                                    |
+| ----------- | --------------------------- | --------------------| ---------------------------------------------- |
+| parent      | string                      |                     | Add task commands to this parent command.      |
+| description | [Description](#description) |                     | Description struct                             |
+| dir         | string                      | _working directory_ | The directory in which this command should run |
+| flags       | [[]Flag](#flag)             |                     | Array of Flag structs                          |
+| cmds        | []string                    |                     | Array of commands to be execute                |
 
 #### Flag
 

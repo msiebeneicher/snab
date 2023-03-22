@@ -7,7 +7,7 @@ import (
 )
 
 // parseTaskCommand will parse setted flags by go-template
-func parseTaskCommand(use string, cmd string) (string, error) {
+func parseTaskCommand(use string, cmd string, snabfileDir string) (string, error) {
 	tpl, err := template.New("cmd").Parse(cmd)
 	if err != nil {
 		return "", err
@@ -15,16 +15,18 @@ func parseTaskCommand(use string, cmd string) (string, error) {
 
 	var parsed bytes.Buffer
 
-	// merge task*Flags maps for parsing
-	tFlags := map[string]any{}
+	// merge task*Flags maps and defaults for parsing
+	tVars := map[string]any{}
+	tVars["snabfileDir"] = snabfileDir
+
 	for k, v := range tStringFlags[use] {
-		tFlags[k] = *v
+		tVars[k] = *v
 	}
 	for k, v := range tBoolFlags[use] {
-		tFlags[k] = *v
+		tVars[k] = *v
 	}
 
-	err = tpl.Execute(&parsed, tFlags)
+	err = tpl.Execute(&parsed, tVars)
 	if err != nil {
 		return "", err
 	}

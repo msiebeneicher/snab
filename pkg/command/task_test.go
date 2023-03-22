@@ -2,6 +2,7 @@ package command
 
 import (
 	"os"
+	"path/filepath"
 	"snab/pkg/snabfile"
 	"testing"
 
@@ -33,7 +34,7 @@ func TestInitTaskCommands(t *testing.T) {
 	tasks["task1"] = task1
 	tasks["task2"] = task2
 
-	InitTaskCommands(tasks, "workingDir", &cmd)
+	InitTaskCommands(tasks, "snabfileDir", &cmd)
 }
 
 func TestInitTaskCommandsWithInvalidParent(t *testing.T) {
@@ -58,7 +59,7 @@ func TestInitTaskCommandsWithInvalidParent(t *testing.T) {
 	tasks["task1"] = task1
 	tasks["task2"] = task2
 
-	InitTaskCommands(tasks, "workingDir", &cmd)
+	InitTaskCommands(tasks, "snabfileDir", &cmd)
 }
 
 func TestNewTaskCommand(t *testing.T) {
@@ -104,5 +105,31 @@ func TestGetExecDirectory(t *testing.T) {
 	}
 	if !fileInfo.IsDir() {
 		t.Errorf("Expected valid dir for %s", d)
+	}
+
+	if d != filepath.Clean(tmp) {
+		t.Errorf("Expected directory '%s' should be '%s'", d, tmp)
+	}
+}
+
+func TestGetExecDirectoryForEmptyTaskDir(t *testing.T) {
+	home, _ := os.UserHomeDir()
+	wd, _ := os.Getwd()
+
+	d, err := getExecDirectory(home, "")
+	if err != nil {
+		t.Error("Expected no error")
+	}
+
+	fileInfo, err := os.Stat(d)
+	if err != nil {
+		t.Errorf("Expected no error in os.Stat for %s", d)
+	}
+	if !fileInfo.IsDir() {
+		t.Errorf("Expected valid dir for %s", d)
+	}
+
+	if d != filepath.Clean(wd) {
+		t.Errorf("Expected directory '%s' should be '%s'", d, wd)
 	}
 }
