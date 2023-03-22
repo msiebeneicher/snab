@@ -128,7 +128,7 @@ func execCobraCommand(task snabfile.Task, cmd *cobra.Command, snabfileDir string
 		}
 
 		// parse flags in command string from snabfile
-		execCmd, err := parseTaskCommand(cmd.Use, c)
+		execCmd, err := parseTaskCommand(cmd.Use, c, snabfileDir)
 		if err != nil {
 			logger.WithField("err", err).Fatalf("error during getting exec directory `%s`", task.Dir)
 		}
@@ -157,15 +157,13 @@ func execCobraCommand(task snabfile.Task, cmd *cobra.Command, snabfileDir string
 
 // getExecDirectory validate and return exec directory path
 func getExecDirectory(snabfileDir string, taskDir string) (string, error) {
-	// if taskDir == "" {
-	// 	wd, err := os.Getwd()
-	// 	if err != nil {
-	// 		return "", err
-	// 	}
-	// 	taskDir = fmt.Sprintf("%s/%s", wd, taskDir)
-	// }
-
-	if !filepath.IsAbs(taskDir) {
+	if taskDir == "" {
+		wd, err := os.Getwd()
+		if err != nil {
+			return "", err
+		}
+		taskDir = fmt.Sprintf("%s/%s", wd, taskDir)
+	} else if !filepath.IsAbs(taskDir) {
 		taskDir = fmt.Sprintf("%s/%s", snabfileDir, taskDir)
 	}
 
@@ -179,5 +177,5 @@ func getExecDirectory(snabfileDir string, taskDir string) (string, error) {
 		return "", err
 	}
 
-	return d, nil
+	return filepath.Clean(d), nil
 }
