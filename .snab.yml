@@ -1,0 +1,48 @@
+schema_version: '0.2'
+
+name: dummy
+version: '0.1.0'
+
+description:
+  short: Example app
+  long: Example app to provide shell script collection under /usr/local/bin/dummy
+  example: dummy --help
+
+tasks:
+  # simple command
+  foo:
+    description:
+      short: foo script
+      long: echo awesome foo script name
+      example: dummy foo [--verbose]
+    cmds:
+      - echo "I am foo"
+
+  # command with flag
+  bar:
+    description:
+      short: bar script
+    flags:
+      - name: name
+        shorthand: n
+        usage: Your name to say hello
+        value: Max
+        type: string
+    cmds:
+      -  echo "Hello {{ .name }}! I am bar."
+
+  # category without own cmds execution
+  cat:
+    description:
+      short: A category to add commands as subcommands
+      long:  Only a category for further subcommands
+
+  # subcommand unter `cat`
+  foobar:
+    parent: cat
+    description:
+      short: foobar sub command
+      long: foobar command under cat
+      example: dummy cat foobar [--verbose]
+    cmds:
+      - echo "I am foobar"
