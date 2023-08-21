@@ -29,10 +29,8 @@ type RunCommandOptions struct {
 	Stderr    io.Writer
 }
 
-var (
-	// ErrNilOptions is returned when a nil options is given
-	ErrNilOptions = errors.New("execext: nil options given")
-)
+// ErrNilOptions is returned when a nil options is given
+var ErrNilOptions = errors.New("execext: nil options given")
 
 // RunCommand runs a shell command
 func RunCommand(ctx context.Context, opts *RunCommandOptions) error {
@@ -62,7 +60,7 @@ func RunCommand(ctx context.Context, opts *RunCommandOptions) error {
 	r, err := interp.New(
 		interp.Params(params...),
 		interp.Env(expand.ListEnviron(environ...)),
-		interp.ExecHandler(interp.DefaultExecHandler(15*time.Second)),
+		interp.ExecHandlers(execHandler),
 		interp.OpenHandler(openHandler),
 		interp.StdIO(opts.Stdin, opts.Stdout, opts.Stderr),
 		dirOption(opts.Dir),
@@ -114,6 +112,10 @@ func Expand(s string) (string, error) {
 		return fields[0], nil
 	}
 	return "", nil
+}
+
+func execHandler(next interp.ExecHandlerFunc) interp.ExecHandlerFunc {
+	return interp.DefaultExecHandler(15 * time.Second)
 }
 
 func openHandler(ctx context.Context, path string, flag int, perm os.FileMode) (io.ReadWriteCloser, error) {
