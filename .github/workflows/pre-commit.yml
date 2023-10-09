@@ -35,7 +35,7 @@ jobs:
 
     - name: Install pre-commit prerequisites
       if: steps.has_pre_commit_config_file.outputs.files_exists == 'true'
-      uses: asdf-vm/actions/install@v2
+      uses: asdf-vm/actions/install@v3
       with:
         tool_versions: |
           golangci-lint 1.51.2
